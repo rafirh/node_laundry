@@ -11,12 +11,12 @@ app.get("/laundry", (req,res) => {
     })
 })
 
+app.use("/laundry/user", require("./routes/user.router"))
 app.use("/laundry/outlet", require("./routes/outlet.router"))
-// app.use("/laundry/user", require("./routes/user.router"))
-// app.use("/laundry/paket", require("./routes/paket_cuci.router"))
-// app.use("/laundry/pelanggan", require("./routes/pelanggan.router"))
-// app.use("/laundry/transaksi", require("./routes/transaksi.router"))
-// app.use("/laundry/detail-transaksi", require("./routes/detail_transaksi.router"))
+app.use("/laundry/paket", require("./routes/paket_cuci.router"))
+app.use("/laundry/pelanggan", require("./routes/pelanggan.router"))
+//app.use("/laundry/transaksi", require("./routes/transaksi.router"))
+//app.use("/laundry/detail-transaksi", require("./routes/detail_transaksi.router"))
 
 db.connect((err) => {
     if(err){

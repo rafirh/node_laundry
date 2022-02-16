@@ -8,7 +8,7 @@ module.exports = {
                 throw err;
             }else{
                 res.json({
-                    result
+                    data: result
                 })
             }
         })
@@ -45,6 +45,38 @@ module.exports = {
             }else{
                 res.json({
                     message: "Succes added outlet.",
+                    data
+                })
+            }
+        })        
+    },
+    delete: (req,res) => {
+        let id_outlet = req.body.id_outlet;
+        let sql = "delete from outlet where id_outlet = ?";
+        db.query(sql,id_outlet, (err,result) => {
+            if(err){
+                throw err;
+            }else{
+                res.json({
+                    message: `Successfully delete outlet where id = ${id_outlet}.`
+                })
+            }
+        })        
+    },
+    update: (req,res) => {
+        let id_outlet = req.body.id_outlet;
+        let data = {
+            nama_outlet: req.body.nama_outlet,
+            alamat_outlet: req.body.alamat_outlet,
+            telp_outlet: req.body.telp_outlet
+        }
+        let sql = "update outlet set ? where id_outlet = ?";
+        db.query(sql,[data, id_outlet], (err,result) => {
+            if(err){
+                throw err;
+            }else{
+                res.json({
+                    message: `Successfully update outlet where id = ${id_outlet}.`,
                     data
                 })
             }

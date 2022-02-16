@@ -14,9 +14,9 @@ module.exports = {
         })
     },
     displayData: (req,res) => {
-        let id_pelanggan = req.params.id_pelanggan;
+        let id = req.params.id;
         let sql = "select * from pelanggan where id_pelanggan = ?";
-        db.query(sql, id_pelanggan, (err,result) => {
+        db.query(sql, id, (err,result) => {
             if(err){
                 throw err;
             }else{
@@ -68,11 +68,11 @@ module.exports = {
     update: (req,res) => {
         let id_pelanggan = req.body.id_pelanggan;
         let data = {
-            nama_user: req.body.nama_user,
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-            outlet_id: req.body.outlet_id
+            nama_pelanggan: req.body.nama_pelanggan,
+            alamat_pelanggan: req.body.alamat_pelanggan,
+            jenis_kelamin: req.body.jenis_kelamin,
+            telp_pelanggan: req.body.telp_pelanggan,
+            no_ktp: req.body.no_ktp
         }
         let sql = "update pelanggan set ? where id_pelanggan = ?";
         db.query(sql,[data, id_pelanggan], (err,result) => {

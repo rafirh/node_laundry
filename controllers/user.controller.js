@@ -1,4 +1,5 @@
 const db = require("../db");
+const md5 = require("md5");
 
 module.exports = {
     displayAllData: (req,res) => {
@@ -36,7 +37,7 @@ module.exports = {
         let data = {
             nama_user: req.body.nama_user,
             username: req.body.username,
-            password: req.body.password,
+            password: md5(req.body.password),
             role: req.body.role,
             outlet_id: req.body.outlet_id
         }
@@ -70,7 +71,7 @@ module.exports = {
         let data = {
             nama_user: req.body.nama_user,
             username: req.body.username,
-            password: req.body.password,
+            password: md5(req.body.password),
             role: req.body.role,
             outlet_id: req.body.outlet_id
         }

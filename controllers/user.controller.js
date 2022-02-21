@@ -34,24 +34,23 @@ module.exports = {
         })        
     },
     add: (req,res) => {
-        let data = {
-            nama_user: req.body.nama_user,
-            username: req.body.username,
-            password: md5(req.body.password),
-            role: req.body.role,
-            outlet_id: req.body.outlet_id
+        const { nama_user, username, password, outlet_id, role } = req.body;
+        if(!nama_user || !username || !password || !outlet_id || !role) {
+            res.status(402).json({
+                message: "Data required"
+            })
+        }else{
+            return db.query('insert into user set ?', { nama_user, username, password: hashPassword(password), outlet_id, role}, (err, result) => {
+                if(err){
+                    return res.status(500).json({err})
+                }else{
+                    return res.json({
+                        message: "Registration success",
+                        data: result
+                    })
+                }
+            })
         }
-        let sql = "insert into user set ?";
-        db.query(sql,data, (err,result) => {
-            if(err){
-                throw err;
-            }else{
-                res.json({
-                    message: "Success added user.",
-                    data
-                })
-            }
-        })        
     },
     delete: (req,res) => {
         let id_user = req.body.id_user;

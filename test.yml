@@ -39,3 +39,10 @@ copilot: I am a copilot.
 
 me: What is best backend framework?
 copilot: rails
+
+me: What is best web backend framework?
+copilot: rails
+
+me: What is best frontend framework?
+copilot: react
+

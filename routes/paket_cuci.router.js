@@ -1,11 +1,12 @@
 const express = require("express");
 const router =  new express.Router();
 const controller = require('../controllers/paket_cuci.controller');
+const auth = require('../auth/validation')
 
-router.get("/", controller.displayAllData);
-router.get("/:id", controller.displayData);
-router.post("/", controller.add);
-router.delete("/", controller.delete);
-router.put("/", controller.update);
+router.get("/", auth.checkToken, controller.displayAllData);
+router.get("/:id", auth.checkToken, controller.displayData);
+router.post("/", auth.checkToken, controller.add);
+router.delete("/", auth.checkToken, controller.delete);
+router.put("/", auth.checkToken, controller.update);
 
 module.exports = router;

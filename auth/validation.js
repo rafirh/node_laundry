@@ -15,7 +15,7 @@ module.exports={
                     })
                 }else{
                     let user = decoded.result
-                    next()        
+                    next()  
                 }
             })
         }else{

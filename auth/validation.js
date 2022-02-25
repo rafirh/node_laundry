@@ -11,7 +11,7 @@ module.exports={
                 if(err){
                     res.json({
                         success:0,
-                        message:"Login First"
+                        message:"Login First",
                     })
                 }else{
                     let user = decoded.result

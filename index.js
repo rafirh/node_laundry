@@ -1,9 +1,18 @@
 const express = require("express");
 const db = require("./db");
 const app = express();
+const session = require("express-session");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+app.use(
+    session({
+      secret: "secret",
+      resave: true,
+      saveUninitialized: true,
+    })
+);
 
 app.get("/laundry", (req,res) => {
     res.send({

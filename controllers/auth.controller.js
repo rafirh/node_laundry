@@ -4,7 +4,6 @@ const db = require('../db');
 
 const secret = '#$@^%*&%$$@&';
 
-
 module.exports = {
     login: (req,res) => {
         const { username, password } = req.body;
@@ -20,7 +19,10 @@ module.exports = {
                     if(result.length > 0){
                         const user = result[0];
                         if(bcrypt.compareSync(password, user.password)){
-                            const token = jwt.sign({ id: user.id }, secret);
+                            const token = jwt.sign({ id: user.id }, secret,{
+                                expiresIn: '1h'
+                            });
+                            req.session.role = user.role;
                             return res.json({
                                 message: "Login success",
                                 data: {

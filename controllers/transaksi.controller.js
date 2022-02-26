@@ -1,4 +1,5 @@
 const db = require("../db");
+let kode_invoice = "";
 
 module.exports = {
     displayAllData: (req,res) => {
@@ -45,22 +46,48 @@ module.exports = {
         })        
     },
     add: (req,res) => {
-        let data = {
-            nama_outlet: req.body.nama_outlet,
-            alamat_outlet: req.body.alamat_outlet,
-            telp_outlet: req.body.telp_outlet
+        let transaksi;
+        let data1 = {
+            outlet_id: req.body.outlet_id,
+            id_pelanggan: req.body.id_pelanggan,
+            id_user: req.body.id_user,
+            kode_invoice: req.body.kode_invoice,
+            tgl: req.body.tgl,
+            tgl_pembayaran: req.body.tgl_pembayaran,
+            status: req.body.status,
+            status_bayar: req.body.status_bayar
         }
-        let sql = "insert into outlet set ?";
-        db.query(sql,data, (err,result) => {
+        let sql1 = "INSERT INTO transaksi SET ?";
+        db.query(sql1,data1, (err,result) => {
             if(err){
                 throw err;
             }else{
+                transaksi = result;
                 res.json({
-                    message: "Succes added outlet.",
-                    data
+                    message: "Data has been added."
                 })
             }
-        })        
+        })
+        setTimeout(() => {
+            let data2 = {
+                id_transaksi: transaksi.id_transaksi,
+                id_paket: req.body.id_paket,
+                qty: req.body.qty,
+                total_harga: req.body.total_harga,
+                keterangan: req.body.keterangan
+            }
+            let sql2 = "INSERT INTO detail_transaksi SET ?";
+            db.query(sql2,data2, (err,result) => {
+                if(err){
+                    throw err;
+                }else{
+                    res.json({
+                        message: "Data has been added.",
+                        data: transaksi + result
+                    })
+                }
+            })
+        }, 1000);
     },
     delete: (req,res) => {
         let id_outlet = req.body.id_outlet;

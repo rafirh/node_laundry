@@ -1,5 +1,14 @@
 const db = require("../db");
-let kode_invoice = "";
+//$kode = "CLN" . date('Ymdsi');
+//CLN202202194337
+let d = new Date();
+let y = d.getFullYear();
+let m = ("0" + (d.getMonth() + 1)).slice(-2);
+let d = ("0" + d.getDate()).slice(-2);
+let s = ("0" + d.getSeconds()).slice(-2);
+let i = ("0" + d.getMinutes()).slice(-2);
+let kode_invoice = `CLN${y}${m}${d}${s}${i}`;
+console.log(kode_invoice);
 
 module.exports = {
     displayAllData: (req,res) => {

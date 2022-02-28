@@ -1,14 +1,16 @@
 const db = require("../db");
 //$kode = "CLN" . date('Ymdsi');
 //CLN202202194337
-let d = new Date();
-let y = d.getFullYear();
-let m = ("0" + (d.getMonth() + 1)).slice(-2);
-let d = ("0" + d.getDate()).slice(-2);
-let s = ("0" + d.getSeconds()).slice(-2);
-let i = ("0" + d.getMinutes()).slice(-2);
+//CLN202202272722
+let date = new Date();
+let y = date.getFullYear();
+let m = ("0" + (date.getMonth() + 1)).slice(-2);
+let d = ("0" + date.getDate()).slice(-2);
+let h = ("0" + date.getHours()).slice(-2);
+let s = ("0" + date.getSeconds()).slice(-2);
+let i = ("0" + date.getMinutes()).slice(-2);
 let kode_invoice = `CLN${y}${m}${d}${s}${i}`;
-console.log(kode_invoice);
+let tgl = `${y}-${m}-${d} ${h}:${i}:${s}`;
 
 module.exports = {
     displayAllData: (req,res) => {
@@ -60,11 +62,18 @@ module.exports = {
             outlet_id: req.body.outlet_id,
             id_pelanggan: req.body.id_pelanggan,
             id_user: req.body.id_user,
-            kode_invoice: req.body.kode_invoice,
+            kode_invoice: kode_invoice,
             tgl: req.body.tgl,
             tgl_pembayaran: req.body.tgl_pembayaran,
             status: req.body.status,
             status_bayar: req.body.status_bayar
+        }
+        let data2 = {
+            id_transaksi: transaksi.id_transaksi,
+            id_paket: req.body.id_paket,
+            qty: req.body.qty,
+            total_harga: req.body.total_harga,
+            keterangan: req.body.keterangan
         }
         let sql1 = "INSERT INTO transaksi SET ?";
         db.query(sql1,data1, (err,result) => {
@@ -72,19 +81,9 @@ module.exports = {
                 throw err;
             }else{
                 transaksi = result;
-                res.json({
-                    message: "Data has been added."
-                })
             }
         })
         setTimeout(() => {
-            let data2 = {
-                id_transaksi: transaksi.id_transaksi,
-                id_paket: req.body.id_paket,
-                qty: req.body.qty,
-                total_harga: req.body.total_harga,
-                keterangan: req.body.keterangan
-            }
             let sql2 = "INSERT INTO detail_transaksi SET ?";
             db.query(sql2,data2, (err,result) => {
                 if(err){

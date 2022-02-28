@@ -7,7 +7,7 @@ const auth = require('../auth/validation')
 router.get("/", auth.checkToken ,controller.displayAllData);
 router.get("/data", auth.checkToken ,controller.displayAllData2);
 router.get("/:id", auth.checkToken ,controller.displayData);
-// router.post("/", auth.checkToken, controller.add);
+router.post("/", auth.checkToken, controller.add);
 // router.delete("/", auth.checkToken, controller.delete);
 // router.put("/", auth.checkToken, controller.update);
 

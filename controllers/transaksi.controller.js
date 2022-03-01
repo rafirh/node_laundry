@@ -12,6 +12,15 @@ let i = ("0" + date.getMinutes()).slice(-2);
 let kode_invoice = `CLN${y}${m}${d}${s}${i}`;
 let tgl = `${y}-${m}-${d} ${h}:${i}:${s}`;
 
+const date2 = new Date();
+d.setDate(date2.getDate() + 7);
+let y2 = date2.getUTCFullYear();
+let m2 = date.getUTCMonth();
+let d2 = date.getUTCDay();
+let batas_waktu = `${y2}-${m2}-${d2}`;
+console.log(batas_waktu);
+
+
 module.exports = {
     displayAllData: (req,res) => {
         let sql = "SELECT transaksi.*, detail_transaksi.* from transaksi join detail_transaksi on transaksi.id_transaksi = detail_transaksi.id_transaksi";
@@ -65,6 +74,10 @@ module.exports = {
             kode_invoice: kode_invoice,
             tgl: req.body.tgl,
             tgl_pembayaran: req.body.tgl_pembayaran,
+            batas_waktu: req.body.batas_waktu,
+            diskon: req.body.diskon,
+            biaya_tambahan: req.body.biaya_tambahan,
+            pajak: req.body.pajak,
             status: req.body.status,
             status_bayar: req.body.status_bayar
         }

@@ -2,23 +2,7 @@ const db = require("../db");
 //$kode = "CLN" . date('Ymdsi');
 //CLN202202194337
 //CLN202202272722
-let date = new Date();
-let y = date.getFullYear();
-let m = ("0" + (date.getMonth() + 1)).slice(-2);
-let d = ("0" + date.getDate()).slice(-2);
-let h = ("0" + date.getHours()).slice(-2);
-let s = ("0" + date.getSeconds()).slice(-2);
-let i = ("0" + date.getMinutes()).slice(-2);
-let kode_invoice = `CLN${y}${m}${d}${s}${i}`;
-let tgl = `${y}-${m}-${d} ${h}:${i}:${s}`;
 
-const date2 = new Date();
-d.setDate(date2.getDate() + 7);
-let y2 = date2.getUTCFullYear();
-let m2 = date.getUTCMonth();
-let d2 = date.getUTCDay();
-let batas_waktu = `${y2}-${m2}-${d2}`;
-console.log(batas_waktu);
 
 
 module.exports = {
@@ -66,49 +50,76 @@ module.exports = {
         })        
     },
     add: (req,res) => {
-        let transaksi;
+        let date = new Date();
+        let y = date.getFullYear();
+        let m = ("0" + (date.getMonth() + 1)).slice(-2);
+        let d = ("0" + date.getDate()).slice(-2);
+        let h = ("0" + date.getHours()).slice(-2);
+        let s = ("0" + date.getSeconds()).slice(-2);
+        let i = ("0" + date.getMinutes()).slice(-2);
+        let kode_invoice = `CLN${y}${m}${d}${s}${i}`;
+        let tgl = `${y}-${m}-${d} ${h}:${i}:${s}`;
+
+        const date2 = new Date();
+        date2.setDate(date2.getDate() + 7);
+        let y2 = date2.getFullYear();
+        let m2 = ("0" + (date2.getMonth() + 1)).slice(-2);
+        let d2 = ("0" + date2.getDate()).slice(-2);
+        let batas_waktu = `${y2}-${m2}-${d2} ${h}:${i}:${s}`;
+
         let data1 = {
             outlet_id: req.body.outlet_id,
             id_pelanggan: req.body.id_pelanggan,
             id_user: req.body.id_user,
             kode_invoice: kode_invoice,
-            tgl: req.body.tgl,
-            tgl_pembayaran: req.body.tgl_pembayaran,
-            batas_waktu: req.body.batas_waktu,
+            tgl: tgl,
+            batas_waktu: batas_waktu,
             diskon: req.body.diskon,
             biaya_tambahan: req.body.biaya_tambahan,
             pajak: req.body.pajak,
-            status: req.body.status,
-            status_bayar: req.body.status_bayar
-        }
-        let data2 = {
-            id_transaksi: transaksi.id_transaksi,
-            id_paket: req.body.id_paket,
-            qty: req.body.qty,
-            total_harga: req.body.total_harga,
-            keterangan: req.body.keterangan
+            status: "baru",
+            status_bayar: "belum"
         }
         let sql1 = "INSERT INTO transaksi SET ?";
         db.query(sql1,data1, (err,result) => {
             if(err){
                 throw err;
             }else{
-                transaksi = result;
+                let sql2 = "SELECT * FROM paket_cuci WHERE id_paket = ?";
+                db.query(sql2,req.body.id_paket, (err,result) => {
+                    if(err){
+                        throw err;
+                    }else{
+                        let harga = result[0].harga;
+                        let sql4 = "SELECT * FROM transaksi WHERE kode_invoice = ?";
+                        db.query(sql4,kode_invoice, (err,result) => {
+                            if(err){
+                                throw err;
+                            }else{
+                                let total_harga = harga * req.body.qty;
+                                let data2 = {
+                                    id_transaksi: result[0].id_transaksi,
+                                    id_paket: req.body.id_paket,
+                                    qty: req.body.qty,
+                                    total_harga: total_harga,
+                                    keterangan: req.body.keterangan
+                                }
+                                let sql3 = "INSERT INTO detail_transaksi SET ?";
+                                db.query(sql3,data2, (err,result) => {
+                                    if(err){
+                                        throw err;
+                                    }else{
+                                        res.json({
+                                            message: "Data transaction inserted successfully."
+                                        })
+                                    }
+                                })
+                            }
+                        })    
+                    }
+                })
             }
         })
-        setTimeout(() => {
-            let sql2 = "INSERT INTO detail_transaksi SET ?";
-            db.query(sql2,data2, (err,result) => {
-                if(err){
-                    throw err;
-                }else{
-                    res.json({
-                        message: "Data has been added.",
-                        data: transaksi + result
-                    })
-                }
-            })
-        }, 1000);
     },
     delete: (req,res) => {
         let id_outlet = req.body.id_outlet;

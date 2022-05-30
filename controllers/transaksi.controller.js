@@ -3,8 +3,6 @@ const db = require("../db");
 //CLN202202194337
 //CLN202202272722
 
-
-
 module.exports = {
     displayAllData: (req,res) => {
         let sql = "SELECT transaksi.*, detail_transaksi.* from transaksi join detail_transaksi on transaksi.id_transaksi = detail_transaksi.id_transaksi";

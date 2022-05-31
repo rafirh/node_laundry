@@ -119,20 +119,7 @@ module.exports = {
             }
         })
     },
-    delete: (req,res) => {
-        let id_outlet = req.body.id_outlet;
-        let sql = "delete from outlet where id_outlet = ?";
-        db.query(sql,id_outlet, (err,result) => {
-            if(err){
-                throw err;
-            }else{
-                res.json({
-                    message: `Successfully delete outlet where id = ${id_outlet}.`
-                })
-            }
-        })        
-    },
-    update: (req,res) => {
+    updateStatus: (req,res) => {
         let id_outlet = req.body.id_outlet;
         let data = {
             nama_outlet: req.body.nama_outlet,

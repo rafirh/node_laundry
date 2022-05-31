@@ -1,5 +1,6 @@
 const db = require("../db");
 const md5 = require("md5");
+const bcrypt = require("bcrypt")
 
 function hashPassword(password) {
     const salt = bcrypt.genSaltSync(10);
@@ -20,7 +21,7 @@ module.exports = {
         })
     },
     displayData: (req,res) => {
-        let id_user = req.params.id_user;
+        let id_user = req.params.id;
         let sql = "select * from user where id_user = ?";
         db.query(sql, id_user, (err,result) => {
             if(err){

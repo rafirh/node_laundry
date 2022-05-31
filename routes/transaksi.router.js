@@ -8,6 +8,8 @@ router.get("/", auth.checkToken ,controller.displayAllData);
 router.get("/data", auth.checkToken ,controller.displayAllData2);
 router.get("/:id", auth.checkToken ,controller.displayData);
 router.post("/", auth.checkToken, controller.add);
+router.put("/updateStatus", auth.checkToken, controller.updateStatus);
+router.put("/updatePayment", auth.checkToken, controller.updatePayment);
 // router.delete("/", auth.checkToken, controller.delete);
 // router.put("/", auth.checkToken, controller.update);
 

@@ -66,7 +66,7 @@ module.exports = {
                 throw err;
             }else{
                 res.json({
-                    message: `Successfully delete packet where id = ${id_user}.`
+                    message: `Successfully delete user where id = ${id_user}.`
                 })
             }
         })        
